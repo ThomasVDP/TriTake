@@ -8,21 +8,17 @@ import reactor.util.function.Tuples;
 public class BindToChannelEvent implements IEvent<MessageCreateEvent>
 {
     @Override
-    public String getName()
-    {
-        return "tt!bind";
-    }
-
-    @Override
     public Class<? extends Object> getClassType()
     {
         return MessageCreateEvent.class;
     }
 
     @Override
-    public boolean canExecute(MessageCreateEvent event)
+    public Mono<Boolean> canExecute(MessageCreateEvent event)
     {
-        return event.getMessage().getContent().matches("(?:tt|tritake)!bind") && event.getMessage().getAuthor().map(user -> !user.isBot()).orElse(false);
+        return Mono.just(event.getMessage().getContent().matches("(?:tt|tritake)!bind"))
+                .filter(state -> event.getMessage().getAuthor().map(user -> !user.isBot()).orElse(false))
+                .switchIfEmpty(Mono.just(false));
     }
 
     @Override
@@ -38,7 +34,7 @@ public class BindToChannelEvent implements IEvent<MessageCreateEvent>
                                 {
                                     return message.getChannel().flatMap(channel -> channel.createMessage("Already bound to this channel!"));
                                 } else {
-                                    return message.getChannel().flatMap(channel -> channel.createMessage("Changing bound channel!\nConfirm by sending `tt!confirm` as your next message!"));
+                                    return message.getChannel().flatMap(channel -> channel.createMessage("Changing bound channel!\nConfirm by sending `tt!confirm` as your next message! (Within 3 minutes)"));
                                 }
                             } else {
                                 ServerManager.GetInstance().getServerToChannel().put(guildIdTest.getT2(), message.getChannelId());

@@ -2,14 +2,13 @@ package com.github.ThomasVDP.tritake.event;
 
 import discord4j.core.event.domain.Event;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 public interface IEvent<T extends Event>
 {
-    String getName();
+    Class<?> getClassType();
 
-    Class<? extends Object> getClassType();
+    Mono<Boolean> canExecute(T event);
 
-    boolean canExecute(T event);
-
-    Publisher<?> execute(T event);
+    Publisher<Object> execute(T event);
 }
