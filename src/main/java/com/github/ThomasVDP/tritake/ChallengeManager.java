@@ -66,6 +66,7 @@ public class ChallengeManager
             //cancel match
             Snowflake from = member.getId();
             Snowflake to = this.challenges.get(guildId).stream().filter(tuple -> tuple.getT1().equals(from)).findFirst().get().getT2();
+            this.challenges.get(guildId).stream().filter(tuple -> tuple.getT1().equals(from)).forEach(tuple -> tuple.getT4().dispose());
             this.challenges.get(guildId).removeIf((tuple -> tuple.getT1().equals(from)));
             GameManager.GetInstance().removeGame(guildId, from, to);
             return message.getChannel().flatMap(channel -> ServerManager.GetInstance().getClient().getUserById(from)
@@ -76,6 +77,7 @@ public class ChallengeManager
             //cancel match
             Snowflake from = this.challenges.get(guildId).stream().filter(tuple -> tuple.getT2().equals(member.getId())).findFirst().get().getT1();
             Snowflake to = member.getId();
+            this.challenges.get(guildId).stream().filter(tuple -> tuple.getT1().equals(from)).forEach(tuple -> tuple.getT4().dispose());
             this.challenges.get(guildId).removeIf(tuple -> tuple.getT1().equals(from));
             GameManager.GetInstance().removeGame(guildId, from, to);
             return message.getChannel().flatMap(channel -> ServerManager.GetInstance().getClient().getUserById(from)

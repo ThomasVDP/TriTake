@@ -129,6 +129,7 @@ public class GameManager
         Tuple3<Boolean, Boolean, Boolean> winStatus = gameData.getT4().hasWon();
         if (winStatus.getT1() || winStatus.getT2())
         {
+            ChallengeManager.GetInstance().getChallenges(member.getGuildId()).stream().filter(tuple -> tuple.getT1().equals(gameData.getT1())).forEach(tuple -> tuple.getT4().dispose());
             ChallengeManager.GetInstance().getChallenges(member.getGuildId()).removeIf(tuple -> tuple.getT1().equals(gameData.getT1()));
             this.removeGame(member.getGuildId(), gameData.getT1(), gameData.getT2());
             event.getMessage().getChannel().flatMap(channel -> ServerManager.GetInstance().getClient().getUserById(gameData.getT1())
