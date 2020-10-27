@@ -5,6 +5,9 @@ import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.EventDispatcher;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.object.entity.User;
+import discord4j.core.object.presence.Activity;
+import discord4j.core.object.presence.Presence;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 public class TriTake
@@ -36,10 +39,12 @@ public class TriTake
         backupManager.readBackupFile(args[0]);
 
         client.getEventDispatcher().on(ReadyEvent.class)
-                .subscribe(event -> {
+                .flatMap(event -> Mono.fromRunnable(() -> {
                     User self = event.getSelf();
                     System.out.println(String.format("Logged in as %s#%s", self.getUsername(), self.getDiscriminator()));
-                });
+                    client.updatePresence(Presence.online(Activity.listening("\n\"tt!help\" (no quotes) works everywhere!"))).subscribe();
+                }))//.flatMap(o -> client.updatePresence(Presence.online(Activity.watching("\"tt!help\" (no quotes) works everywhere!"))))
+                .subscribe();
 
         serverManager.handleEvents();
 

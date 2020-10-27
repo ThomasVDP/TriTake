@@ -33,6 +33,7 @@ public class HelpCommandEvent implements IEvent<MessageCreateEvent>
                         .setFooter("(made by T_VDP)", null)
                         .setDescription("The official help message for TriTake!\n(if it wasn't obvious already :D)")
                         .addField("Goal", "The game is very **simple**!\n\n -- **Don't remove the last square!** --", false)
+                        .addField("Idea", "Every turn you remove an amount of squares but you're limited to one row every turn. So choose careful because you lose if you take the last square!!", false)
                         .addField("Gameplay", "To start a game you `tt!challenge @user` a person and then wait for them to accept (or reject D: )\n" +
                                 "Accepting is as easy as reacting with a checkmark (refusing works the same way)\n" +
                                 "The game starts.\n" +
@@ -46,6 +47,6 @@ public class HelpCommandEvent implements IEvent<MessageCreateEvent>
                                 "- **tt!confirm**: Command needed to change the bound channel." +
                                 "- **tt!removeRole @role**: Removes the `role` from the bot's whitelist.\n" +
                                 "- **tt!addRole @role**: Adds the `role` to the bot's whitelist, you cannot challenge or get challenged when you don't have one of these roles.\n", false)
-                )).flatMap(message -> event.getMessage().delete());
+                )).flatMap(message -> event.getMessage().delete()).onErrorResume(err -> Mono.empty()).flatMap(o -> Mono.empty());
     }
 }

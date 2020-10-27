@@ -23,7 +23,7 @@ public class GameLayout
         }
         Random rand = new Random();
         this.isChallengersMove = rand.nextBoolean();
-        System.out.println(this.isChallengersMove);
+        //System.out.println(this.isChallengersMove);
     }
 
     public boolean move(int row, int amount)

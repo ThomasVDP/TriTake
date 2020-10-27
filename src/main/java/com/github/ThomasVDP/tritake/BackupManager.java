@@ -29,12 +29,14 @@ public class BackupManager
 
     public BackupManager()
     {
-        Schedulers.boundedElastic().schedulePeriodically(() -> {
-            backup("backup-long.json");
-        }, 0, 1, TimeUnit.HOURS);
-        Schedulers.boundedElastic().schedulePeriodically(() -> {
-            backup("backup-short.json");
-        }, 1, 10, TimeUnit.MINUTES);
+        Schedulers.boundedElastic().schedule(() -> {
+            Schedulers.boundedElastic().schedulePeriodically(() -> {
+                backup("backup-long.json");
+            }, 0, 1, TimeUnit.HOURS);
+            Schedulers.boundedElastic().schedulePeriodically(() -> {
+                backup("backup-short.json");
+            }, 0, 10, TimeUnit.MINUTES);
+        }, 10, TimeUnit.SECONDS);
     }
 
     public static void backup(String fileName)

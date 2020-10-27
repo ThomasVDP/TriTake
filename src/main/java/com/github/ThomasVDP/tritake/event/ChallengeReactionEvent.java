@@ -39,7 +39,7 @@ public class ChallengeReactionEvent implements IEvent<ReactionAddEvent>
                                 .flatMap(memberTo -> ServerManager.GetInstance().getClient().getMemberById(event.getGuildId().get(), ChallengeManager.GetInstance().getChallengerFor(event.getGuildId().get(), memberTo.getId()).get())
                                     .flatMap(memberFrom -> Mono.fromRunnable(() -> {
                                         int sizeIndex = message.getContent().indexOf("(") + 1;
-                                        System.out.println(sizeIndex + ": " + message.getContent().substring(sizeIndex, sizeIndex + 1));
+                                        //System.out.println(sizeIndex + ": " + message.getContent().substring(sizeIndex, sizeIndex + 1));
                                         GameManager.GetInstance().CreateGame(event.getChannel(), memberFrom, memberTo, Integer.parseInt(message.getContent().substring(sizeIndex, sizeIndex + 1)));
                                     }))))));
     }

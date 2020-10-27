@@ -21,7 +21,7 @@ public class ChallengePlayerEvent implements IEvent<MessageCreateEvent>
     @Override
     public Mono<Boolean> canExecute(MessageCreateEvent event)
     {
-        System.out.println(event.getMessage().getContent());
+        //System.out.println(event.getMessage().getContent());
         return Mono.just(event.getMessage().getContent().matches("^(?:tt|tritake)!challenge <@!?\\d+?>(?: +\\d)?$"))
                 .filter(state -> event.getMessage().getAuthor().map(user -> !user.isBot()).orElse(false))
                 .filterWhen(state -> event.getMessage().getChannel().map(channel -> !(channel instanceof PrivateChannel)))
